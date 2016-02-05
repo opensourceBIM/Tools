@@ -29,6 +29,7 @@ import org.bimserver.plugins.deserializers.DeserializeException;
 import org.bimserver.plugins.deserializers.Deserializer;
 import org.bimserver.plugins.deserializers.DeserializerPlugin;
 import org.bimserver.shared.exceptions.PluginException;
+import org.bimserver.utils.DeserializerUtils;
 import org.bimserver.utils.PathUtils;
 
 public class SurfaceAreaAndPeopleCalculator {
@@ -56,8 +57,8 @@ public class SurfaceAreaAndPeopleCalculator {
 	}
 
 	private void processFile(Deserializer ifcDeserializer, java.nio.file.Path originalIfcFile)
-			throws DeserializeException {
-		IfcModelInterface model = ifcDeserializer.read(originalIfcFile);
+			throws DeserializeException, IOException {
+		IfcModelInterface model = DeserializerUtils.readFromFile(ifcDeserializer, originalIfcFile);
 		for (IfcSpace ifcSpace : model.getAllWithSubTypes(IfcSpace.class)) {
 			for (IfcRelContainedInSpatialStructure ifcRelContainedInSpatialStructure : ifcSpace.getContainsElements()) {
 				ifcRelContainedInSpatialStructure.getRelatedElements();

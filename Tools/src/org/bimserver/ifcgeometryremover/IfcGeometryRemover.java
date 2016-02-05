@@ -18,6 +18,8 @@ package org.bimserver.ifcgeometryremover;
  *****************************************************************************/
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
@@ -41,6 +43,7 @@ import org.bimserver.plugins.serializers.SerializerException;
 import org.bimserver.plugins.serializers.SerializerPlugin;
 import org.bimserver.shared.IfcDoc;
 import org.bimserver.shared.exceptions.PluginException;
+import org.bimserver.utils.SerializerUtils;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 
@@ -107,9 +110,13 @@ public class IfcGeometryRemover {
 		Serializer serializer = serializerPlugin.createSerializer(new PluginConfiguration());
 		try {
 			model.resetExpressIds();
-			serializer.init(model, null, pluginManager, null, true);
-			serializer.writeToFile(outFile, null);
+			serializer.init(model, null, pluginManager, true);
+			SerializerUtils.writeToFile(serializer, outFile);
 		} catch (SerializerException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

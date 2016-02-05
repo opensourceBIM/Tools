@@ -18,6 +18,7 @@ package org.bimserver.tools.colorizer;
  *****************************************************************************/
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -57,6 +58,7 @@ import org.bimserver.plugins.serializers.Serializer;
 import org.bimserver.plugins.serializers.SerializerException;
 import org.bimserver.plugins.serializers.SerializerPlugin;
 import org.bimserver.shared.exceptions.PluginException;
+import org.bimserver.utils.SerializerUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -154,11 +156,9 @@ public class Colorizer {
 			DeserializerPlugin deserializerPlugin = pluginManager.getFirstDeserializer("ifc", Schema.IFC2X3TC1, true);
 			Deserializer deserializer = deserializerPlugin.createDeserializer(new PluginConfiguration());
 //			deserializer.init(schema); // TODO
-			IfcModelInterface model = deserializer.read(file);
+			IfcModelInterface model = null;//deserializer.read(file);
 			return model;
 		} catch (PluginException e) {
-			e.printStackTrace();
-		} catch (DeserializeException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -268,9 +268,13 @@ public class Colorizer {
 		try {
 			model.resetExpressIds();
 			// TODO
-			serializer.init(model, null, pluginManager, null, true);
-			serializer.writeToFile(outFile, null);
+			serializer.init(model, null, pluginManager, true);
+			SerializerUtils.writeToFile(serializer, outFile);
 		} catch (SerializerException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
