@@ -39,7 +39,7 @@
 		<dependency>
 			<groupId>org.opensourcebim</groupId>
 			<artifactId>bimserver</artifactId>
-			<version>1.5.37</version>
+			<version>1.5.42-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>
