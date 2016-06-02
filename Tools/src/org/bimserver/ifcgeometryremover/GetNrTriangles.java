@@ -61,13 +61,13 @@ public class GetNrTriangles {
 			BimServerClientFactory factory = new JsonBimServerClientFactory(metaDataManager, args[0]);
 			BimServerClientInterface client = factory.create(new UsernamePasswordAuthenticationInfo(args[1], args[2]));
 			
-			SProject mainProject = client.getBimsie1ServiceInterface().getProjectsByName("Elasstic Ribon").get(0);
+			SProject mainProject = client.getServiceInterface().getProjectsByName("Elasstic Ribon").get(0);
 			
 			csvWriter.writeNext(new String[]{"Project", "Nr Primitives", "Nr Triangles"});
 			for (long poid : mainProject.getSubProjects()) {
-				SProject subProject = client.getBimsie1ServiceInterface().getProjectByPoid(poid);
+				SProject subProject = client.getServiceInterface().getProjectByPoid(poid);
 				for (long poid2 : subProject.getSubProjects()) {
-					SProject subProject2 = client.getBimsie1ServiceInterface().getProjectByPoid(poid2);
+					SProject subProject2 = client.getServiceInterface().getProjectByPoid(poid2);
 					long roid = subProject2.getLastRevisionId();
 					if (roid != -1) {
 						long nrPrimitives = client.getServiceInterface().getNrPrimitives(roid);

@@ -133,12 +133,12 @@ public class CreateLog {
 //				System.out.println(dateFormat.format(logAction.getDate()) + " " + logAction.getClass().getSimpleName());
 //			}
 
-//			List<SProject> projects = client.getBimsie1ServiceInterface().getAllProjects(false, false);
+//			List<SProject> projects = client.getServiceInterface().getAllProjects(false, false);
 //			for (SProject sProject : projects) {
 //				GregorianCalendar created = new GregorianCalendar();
 //				created.setTime(sProject.getCreatedDate());
 //				timeline.put(created, new ProjectCreated(sProject, client.getServiceInterface().getUserByUoid(sProject.getCreatedById())));
-//				List<SRevision> revisions = client.getBimsie1ServiceInterface().getAllRevisionsOfProject(sProject.getOid());
+//				List<SRevision> revisions = client.getServiceInterface().getAllRevisionsOfProject(sProject.getOid());
 //				for (SRevision sRevision : revisions) {
 //					GregorianCalendar gregorianCalendar = new GregorianCalendar();
 //					gregorianCalendar.setTime(sRevision.getDate());
@@ -161,10 +161,10 @@ public class CreateLog {
 					SUser user = null;
 					SRevision revision = null;
 					if (logAction instanceof SProjectRelated) {
-						project = client.getBimsie1ServiceInterface().getProjectByPoid(((SProjectRelated)logAction).getProjectId());
+						project = client.getServiceInterface().getProjectByPoid(((SProjectRelated)logAction).getProjectId());
 					}
 					if (logAction instanceof SRevisionRelated) {
-						revision = client.getBimsie1ServiceInterface().getRevision(((SRevisionRelated)logAction).getRevisionId());
+						revision = client.getServiceInterface().getRevision(((SRevisionRelated)logAction).getRevisionId());
 					}
 					if (logAction instanceof SUserRelated) {
 						user = client.getServiceInterface().getUserByUoid(((SUserRelated)logAction).getUserId());
@@ -177,7 +177,7 @@ public class CreateLog {
 						SProject parentProject = null;
 						description = "Project " + project.getName() + " added";
 						if (sNewProjectAdded.getParentProjectId() != -1) {
-							parentProject = client.getBimsie1ServiceInterface().getProjectByPoid(sNewProjectAdded.getParentProjectId());
+							parentProject = client.getServiceInterface().getProjectByPoid(sNewProjectAdded.getParentProjectId());
 							description += " as a subproject of " + parentProject.getName();
 						}
 					} else if (logAction instanceof SNewUserAdded) {
@@ -188,20 +188,20 @@ public class CreateLog {
 						description = "Server started";
 					} else if (logAction instanceof SExtendedDataAddedToRevision) {
 						SExtendedDataAddedToRevision sExtendedDataAddedToRevision = (SExtendedDataAddedToRevision)logAction;
-						SRevision revision2 = client.getBimsie1ServiceInterface().getRevision(sExtendedDataAddedToRevision.getRevisionId());
-						SProject project2 = client.getBimsie1ServiceInterface().getProjectByPoid(revision2.getProjectId());
+						SRevision revision2 = client.getServiceInterface().getRevision(sExtendedDataAddedToRevision.getRevisionId());
+						SProject project2 = client.getServiceInterface().getProjectByPoid(revision2.getProjectId());
 						description = "Extended data added to revision " + revision2.getId() + " of project " + project2.getName();
 					} else if (logAction instanceof SProjectUpdated) {
 						description = "Project " + project.getName() + " updated";
 					} else if (logAction instanceof SNewRevisionAdded) {
 						SNewRevisionAdded sNewRevisionAdded = (SNewRevisionAdded)logAction;
-						description = "New revision added to project " + client.getBimsie1ServiceInterface().getProjectByPoid(sNewRevisionAdded.getProjectId()).getName() + " with comment " + revision.getComment();
+						description = "New revision added to project " + client.getServiceInterface().getProjectByPoid(sNewRevisionAdded.getProjectId()).getName() + " with comment " + revision.getComment();
 					} else if (logAction instanceof SUserAddedToProject) {
 						SUserAddedToProject sUserAddedToProject = (SUserAddedToProject)logAction;
-						description = "User " + user.getName() + " added to project " + client.getBimsie1ServiceInterface().getProjectByPoid(sUserAddedToProject.getProjectId()).getName();
+						description = "User " + user.getName() + " added to project " + client.getServiceInterface().getProjectByPoid(sUserAddedToProject.getProjectId()).getName();
 					} else if (logAction instanceof SUserRemovedFromProject) {
 						SUserRemovedFromProject sUserRemovedFromProject = (SUserRemovedFromProject)logAction;
-						description = "User " + client.getServiceInterface().getUserByUoid(sUserRemovedFromProject.getUserId()).getName() + " removed from project " + client.getBimsie1ServiceInterface().getProjectByPoid(sUserRemovedFromProject.getProjectId()).getName();
+						description = "User " + client.getServiceInterface().getUserByUoid(sUserRemovedFromProject.getUserId()).getName() + " removed from project " + client.getServiceInterface().getProjectByPoid(sUserRemovedFromProject.getProjectId()).getName();
 					} else {
 						description = "no description";
 					}

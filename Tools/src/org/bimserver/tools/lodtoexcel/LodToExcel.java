@@ -94,12 +94,12 @@ public class LodToExcel {
 		    createHeader(noFurnitureSheet);
 		    createHeader(noProxySheet);
 
-			List<SProject> projects = bimServerClient.getBimsie1ServiceInterface().getAllProjects(true, true);
+			List<SProject> projects = bimServerClient.getServiceInterface().getAllProjects(true, true);
 			int row = 2;
 			for (SProject project : projects) {
 				long roid = project.getLastRevisionId();
 				if (roid != -1) {
-					SRevision revision = bimServerClient.getBimsie1ServiceInterface().getRevision(roid);
+					SRevision revision = bimServerClient.getServiceInterface().getRevision(roid);
 					System.out.println(revision.getComment());
 					IfcModelInterface model = bimServerClient.getModel(project, roid, true, false);
 					

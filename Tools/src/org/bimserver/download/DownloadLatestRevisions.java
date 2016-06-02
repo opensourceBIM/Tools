@@ -55,8 +55,8 @@ public class DownloadLatestRevisions {
 			BimServerClientFactory factory = new JsonBimServerClientFactory(metaDataManager, "http://elassticbim.eu:8080");
 			client = factory.create(new UsernamePasswordAuthenticationInfo("admin@elassticbim.eu", "GIWSELOVSlSWaQ7dSlkp"));
 			System.out.println(client.getSettingsInterface().getSiteAddress());
-			serializer = client.getBimsie1ServiceInterface().getSerializerByName("Ifc2x3");
-			List<SProject> allProjects = client.getBimsie1ServiceInterface().getAllProjects(true, true);
+			serializer = client.getServiceInterface().getSerializerByName("Ifc2x3");
+			List<SProject> allProjects = client.getServiceInterface().getAllProjects(true, true);
 			for (SProject project : allProjects) {
 				downloadProject(toDir, project);
 			}
@@ -70,7 +70,7 @@ public class DownloadLatestRevisions {
 		Files.createDirectory(projectDir);
 		
 		if (!project.getRevisions().isEmpty()) {
-			SRevision revision = client.getBimsie1ServiceInterface().getRevision(project.getLastRevisionId());
+			SRevision revision = client.getServiceInterface().getRevision(project.getLastRevisionId());
 			System.out.println(revision.getComment());
 			if (!revision.getComment().startsWith("generated")) {
 				try {
@@ -82,7 +82,7 @@ public class DownloadLatestRevisions {
 		}
 
 		for (long subProjectOid : project.getSubProjects()) {
-			SProject subProject = client.getBimsie1ServiceInterface().getProjectByPoid(subProjectOid);
+			SProject subProject = client.getServiceInterface().getProjectByPoid(subProjectOid);
 			downloadProject(projectDir, subProject);
 		}
 	}
