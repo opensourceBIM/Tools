@@ -5,6 +5,14 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>generated</directory>
+			</resource>
+			<resource>
+				<directory>src</directory>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
