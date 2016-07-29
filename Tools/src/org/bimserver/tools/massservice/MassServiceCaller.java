@@ -17,6 +17,7 @@ import org.bimserver.interfaces.objects.SProfileDescriptor;
 import org.bimserver.interfaces.objects.SProject;
 import org.bimserver.interfaces.objects.SService;
 import org.bimserver.interfaces.objects.SServiceDescriptor;
+import org.bimserver.plugins.services.Flow;
 import org.bimserver.shared.ChannelConnectionException;
 import org.bimserver.shared.UsernamePasswordAuthenticationInfo;
 import org.bimserver.shared.exceptions.BimServerClientException;
@@ -186,7 +187,7 @@ public class MassServiceCaller {
 
 	private void checkin(SProject project, String extension, Path file) throws UserException, ServerException, IOException, PublicInterfaceNotFoundException {
 		SDeserializerPluginConfiguration deserializer = client.getServiceInterface().getSuggestedDeserializerForExtension(extension, project.getOid());
-		client.checkin(project.getOid(), "Test", deserializer.getOid(), false, true, file);
+		client.checkin(project.getOid(), "Test", deserializer.getOid(), false, Flow.SYNC, file);
 		project = client.getServiceInterface().getProjectByPoid(project.getOid());
 		
 		if (project.getLastRevisionId() == -1) {
@@ -277,7 +278,7 @@ public class MassServiceCaller {
 				client.getServiceInterface().addServiceToProject(project.getOid(), sService);
 				
 				SDeserializerPluginConfiguration deserializer = client.getServiceInterface().getSuggestedDeserializerForExtension(extension, project.getOid());
-				client.checkin(project.getOid(), "Test", deserializer.getOid(), false, true, file);
+				client.checkin(project.getOid(), "Test", deserializer.getOid(), false, Flow.SYNC, file);
 				project = client.getServiceInterface().getProjectByPoid(project.getOid());
 				
 				waitForResults(file, project.getLastRevisionId());

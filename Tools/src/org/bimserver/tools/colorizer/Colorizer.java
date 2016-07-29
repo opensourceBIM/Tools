@@ -51,7 +51,6 @@ import org.bimserver.models.ifc2x3tc1.IfcSurfaceStyleRendering;
 import org.bimserver.models.ifc2x3tc1.IfcText;
 import org.bimserver.plugins.PluginConfiguration;
 import org.bimserver.plugins.PluginManager;
-import org.bimserver.plugins.deserializers.DeserializeException;
 import org.bimserver.plugins.deserializers.Deserializer;
 import org.bimserver.plugins.deserializers.DeserializerPlugin;
 import org.bimserver.plugins.serializers.Serializer;

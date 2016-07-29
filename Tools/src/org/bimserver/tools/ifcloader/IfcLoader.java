@@ -15,6 +15,7 @@ import org.bimserver.client.BimServerClient;
 import org.bimserver.client.json.JsonBimServerClientFactory;
 import org.bimserver.interfaces.objects.SDeserializerPluginConfiguration;
 import org.bimserver.interfaces.objects.SProject;
+import org.bimserver.plugins.services.Flow;
 import org.bimserver.shared.ChannelConnectionException;
 import org.bimserver.shared.UsernamePasswordAuthenticationInfo;
 import org.bimserver.shared.exceptions.BimServerClientException;
@@ -82,7 +83,7 @@ public class IfcLoader {
 			} else {
 				SDeserializerPluginConfiguration deserializer = client.getServiceInterface().getSuggestedDeserializerForExtension("ifc", parent.getOid());
 				try {
-					client.checkin(parent.getOid(), "Initial", deserializer.getOid(), false, true, baseDirectory);
+					client.checkin(parent.getOid(), "Initial", deserializer.getOid(), false, Flow.SYNC, baseDirectory);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
