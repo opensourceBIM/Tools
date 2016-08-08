@@ -1,2 +1,6 @@
 /bin
 /target/
+/binary
+/debug.json
+/error
+/output.json
