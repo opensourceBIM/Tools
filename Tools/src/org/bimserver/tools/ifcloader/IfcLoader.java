@@ -5,6 +5,8 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -53,7 +55,7 @@ public class IfcLoader {
 			String mainProjectName = commandLine.getOptionValue("mainproject");
 			
 			if (Files.exists(baseDirectory)) {
-				createRecursive(baseDirectory, null, mainProjectName);
+				createRecursive(baseDirectory, null, mainProjectName, 0);
 			}
 		} catch (BimServerClientException e) {
 			e.printStackTrace();
@@ -64,7 +66,7 @@ public class IfcLoader {
 		}
 	}
 
-	private void createRecursive(Path baseDirectory, SProject parent, String mainProjectName) {
+	private void createRecursive(Path baseDirectory, SProject parent, String mainProjectName, int nrChildren) {
 		try {
 			if (Files.isDirectory(baseDirectory)) {
 				SProject project = null;
@@ -73,19 +75,34 @@ public class IfcLoader {
 				} else {
 					project = client.getServiceInterface().addProjectAsSubProject(baseDirectory.getFileName().toString(), parent.getOid(), "ifc2x3tc1");
 				}
+				List<Path> paths = new ArrayList<>();
 				try (DirectoryStream<Path> stream = Files.newDirectoryStream(baseDirectory)) {
 					for (Path entry : stream) {
-						createRecursive(entry, project, null);
+						paths.add(entry);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				for (Path path : paths) {
+					createRecursive(path, project, null, paths.size());
+				}
 			} else {
 				SDeserializerPluginConfiguration deserializer = client.getServiceInterface().getSuggestedDeserializerForExtension("ifc", parent.getOid());
-				try {
-					client.checkin(parent.getOid(), "Initial", deserializer.getOid(), false, Flow.SYNC, baseDirectory);
-				} catch (IOException e) {
-					e.printStackTrace();
+				if (nrChildren == 1) {
+					try {
+						client.checkin(parent.getOid(), "Initial", deserializer.getOid(), false, Flow.SYNC, baseDirectory);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} else {
+					String folderName = baseDirectory.getFileName().toString();
+					folderName = folderName.substring(0, folderName.lastIndexOf(".") - 1);
+					SProject project = client.getServiceInterface().addProjectAsSubProject(folderName, parent.getOid(), "ifc2x3tc1");
+					try {
+						client.checkin(project.getOid(), "Initial", deserializer.getOid(), false, Flow.SYNC, baseDirectory);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		} catch (ServerException e) {
