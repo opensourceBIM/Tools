@@ -43,6 +43,7 @@ import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
 public class MassServiceCaller {
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 	private BimServerClient client;
 	private WritableCellFormat times;
 	private WritableCellFormat timesbold;
@@ -210,8 +211,7 @@ public class MassServiceCaller {
 					// outputFile.getFileName().toString());
 					ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 					client.downloadExtendedData(extendedData.getOid(), bytes);
-					ObjectMapper objectMapper = new ObjectMapper();
-					ObjectNode results = objectMapper.readValue(bytes.toByteArray(), ObjectNode.class);
+					ObjectNode results = OBJECT_MAPPER.readValue(bytes.toByteArray(), ObjectNode.class);
 					
 					ObjectNode checks = (ObjectNode) results.get("checks");
 
@@ -273,7 +273,7 @@ public class MassServiceCaller {
 				sService.setReadRevision(serviceDescriptor.isReadRevision());
 				sService.setReadExtendedDataId(-1);
 				sService.setWriteRevisionId(-1);
-				sService.setWriteExtendedDataId(client.getServiceInterface().getExtendedDataSchemaByNamespace(serviceDescriptor.getWriteExtendedData()).getOid());
+				sService.setWriteExtendedDataId(client.getServiceInterface().getExtendedDataSchemaByName(serviceDescriptor.getWriteExtendedData()).getOid());
 				
 				client.getServiceInterface().addServiceToProject(project.getOid(), sService);
 				

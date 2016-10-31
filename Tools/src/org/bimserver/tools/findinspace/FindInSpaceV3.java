@@ -59,8 +59,8 @@ import com.opencsv.CSVWriter;
 
 public class FindInSpaceV3 {
 	private final Set<String> foundGuids = new HashSet<>();
-	private ObjectMapper objectMapper = new ObjectMapper();
-	private ArrayNode jsonOutput = objectMapper.createArrayNode();
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+	private ArrayNode jsonOutput = OBJECT_MAPPER.createArrayNode();
 
 	private final Map<String, Space> guidToSpaces = new HashMap<>();
 	private final Map<String, Space> nameToSpaces = new HashMap<>();
@@ -230,22 +230,22 @@ public class FindInSpaceV3 {
 	}
 
 	private void writeJsonObject(float[] color, double x, double y, double width, double height) {
-		ArrayNode materialNodes = objectMapper.createArrayNode();
-		ArrayNode translateNodes = objectMapper.createArrayNode();
+		ArrayNode materialNodes = OBJECT_MAPPER.createArrayNode();
+		ArrayNode translateNodes = OBJECT_MAPPER.createArrayNode();
 
-		ObjectNode baseColor = objectMapper.createObjectNode();
+		ObjectNode baseColor = OBJECT_MAPPER.createObjectNode();
 		baseColor.put("r", color[0]);
 		baseColor.put("g", color[1]);
 		baseColor.put("b", color[2]);
 		baseColor.put("a", 1);
 		
-		ObjectNode materialNode = objectMapper.createObjectNode();
+		ObjectNode materialNode = OBJECT_MAPPER.createObjectNode();
 		materialNode.put("type", "material");
 		materialNode.set("baseColor", baseColor);
 		materialNode.put("alpha", 1);
 		materialNode.set("nodes", materialNodes);
 		
-		ObjectNode translateNode = objectMapper.createObjectNode();
+		ObjectNode translateNode = OBJECT_MAPPER.createObjectNode();
 		materialNodes.add(translateNode);
 		
 		translateNode.put("type", "translate");
@@ -254,10 +254,10 @@ public class FindInSpaceV3 {
 		translateNode.put("z", 2000);
 		translateNode.set("nodes", translateNodes);
 		
-		ObjectNode boxNode = objectMapper.createObjectNode();
+		ObjectNode boxNode = OBJECT_MAPPER.createObjectNode();
 		translateNodes.add(boxNode);
 		
-		ArrayNode size = objectMapper.createArrayNode();
+		ArrayNode size = OBJECT_MAPPER.createArrayNode();
 		size.add(width / 2);
 		size.add(height / 2);
 		size.add(4000 / 2);
@@ -526,7 +526,7 @@ public class FindInSpaceV3 {
 			e1.printStackTrace();
 		}
 		try {
-			objectMapper.writeValue(new File("output.json"), jsonOutput);
+			OBJECT_MAPPER.writeValue(new File("output.json"), jsonOutput);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
