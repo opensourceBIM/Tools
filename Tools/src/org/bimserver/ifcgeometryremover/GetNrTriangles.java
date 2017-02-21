@@ -58,35 +58,34 @@ public class GetNrTriangles {
 			
 			pluginManager.initAllLoadedPlugins();
 			
-			BimServerClientFactory factory = new JsonBimServerClientFactory(metaDataManager, args[0]);
-			BimServerClientInterface client = factory.create(new UsernamePasswordAuthenticationInfo(args[1], args[2]));
-			
-			SProject mainProject = client.getServiceInterface().getProjectsByName("Elasstic Ribon").get(0);
-			
-			csvWriter.writeNext(new String[]{"Project", "Nr Primitives", "Nr Triangles"});
-			for (long poid : mainProject.getSubProjects()) {
-				SProject subProject = client.getServiceInterface().getProjectByPoid(poid);
-				for (long poid2 : subProject.getSubProjects()) {
-					SProject subProject2 = client.getServiceInterface().getProjectByPoid(poid2);
-					long roid = subProject2.getLastRevisionId();
-					if (roid != -1) {
-						long nrPrimitives = client.getServiceInterface().getNrPrimitives(roid);
-						System.out.println(subProject2.getName() + ": " + nrPrimitives);
-						csvWriter.writeNext(new String[]{mainProject.getName() + "." + subProject.getName() + "." + subProject2.getName(), "" + nrPrimitives, "" + (nrPrimitives * 3)});
-					}
-				}		
+			try (BimServerClientFactory factory = new JsonBimServerClientFactory(metaDataManager, args[0])) {
+				BimServerClientInterface client = factory.create(new UsernamePasswordAuthenticationInfo(args[1], args[2]));
+				
+				SProject mainProject = client.getServiceInterface().getProjectsByName("Elasstic Ribon").get(0);
+				
+				csvWriter.writeNext(new String[]{"Project", "Nr Primitives", "Nr Triangles"});
+				for (long poid : mainProject.getSubProjects()) {
+					SProject subProject = client.getServiceInterface().getProjectByPoid(poid);
+					for (long poid2 : subProject.getSubProjects()) {
+						SProject subProject2 = client.getServiceInterface().getProjectByPoid(poid2);
+						long roid = subProject2.getLastRevisionId();
+						if (roid != -1) {
+							long nrPrimitives = client.getServiceInterface().getNrPrimitives(roid);
+							System.out.println(subProject2.getName() + ": " + nrPrimitives);
+							csvWriter.writeNext(new String[]{mainProject.getName() + "." + subProject.getName() + "." + subProject2.getName(), "" + nrPrimitives, "" + (nrPrimitives * 3)});
+						}
+					}		
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			
 			csvWriter.close();
-		} catch (ServiceException | ChannelConnectionException e) {
-			e.printStackTrace();
 		} catch (PluginException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (PublicInterfaceNotFoundException e) {
-			e.printStackTrace();
-		} catch (BimServerClientException e) {
 			e.printStackTrace();
 		}
 	}

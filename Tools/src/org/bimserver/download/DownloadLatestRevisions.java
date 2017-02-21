@@ -33,6 +33,7 @@ import org.bimserver.plugins.PluginManager;
 import org.bimserver.plugins.services.BimServerClientInterface;
 import org.bimserver.shared.BimServerClientFactory;
 import org.bimserver.shared.UsernamePasswordAuthenticationInfo;
+import org.bimserver.shared.exceptions.BimServerClientException;
 import org.bimserver.shared.exceptions.PublicInterfaceNotFoundException;
 import org.bimserver.shared.exceptions.ServerException;
 import org.bimserver.shared.exceptions.UserException;
@@ -76,6 +77,8 @@ public class DownloadLatestRevisions {
 				try {
 					client.download(project.getLastRevisionId(), serializer.getOid(), projectDir.resolve(revision.getComment()));
 				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (BimServerClientException e) {
 					e.printStackTrace();
 				}
 			}
