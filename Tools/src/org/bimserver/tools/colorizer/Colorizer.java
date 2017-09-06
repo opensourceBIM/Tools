@@ -267,7 +267,7 @@ public class Colorizer {
 		try {
 			model.resetExpressIds();
 			// TODO
-			serializer.init(model, null, pluginManager, true);
+			serializer.init(model, null, true);
 			SerializerUtils.writeToFile(serializer, outFile);
 		} catch (SerializerException e) {
 			e.printStackTrace();
