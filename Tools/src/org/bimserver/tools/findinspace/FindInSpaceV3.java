@@ -300,8 +300,8 @@ public class FindInSpaceV3 {
 					guidToSpaces.put(ifcSpace.getGlobalId(), space);
 					nameToSpaces.put(ifcSpace.getName(), space);
 					
-					Vector3f geometryMinBounds = ifcSpace.getGeometry().getMinBounds();
-					Vector3f geometryMaxBounds = ifcSpace.getGeometry().getMaxBounds();
+					Vector3f geometryMinBounds = ifcSpace.getGeometry().getBounds().getMin();
+					Vector3f geometryMaxBounds = ifcSpace.getGeometry().getBounds().getMax();
 					
 					if (ifcSpace.getRepresentation() != null) {
 //							IfcLocalPlacement objectPlacement = (IfcLocalPlacement) ifcSpace.getObjectPlacement();

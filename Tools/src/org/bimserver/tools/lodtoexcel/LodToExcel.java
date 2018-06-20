@@ -25,6 +25,7 @@ import org.bimserver.client.json.JsonBimServerClientFactory;
 import org.bimserver.emf.IfcModelInterface;
 import org.bimserver.interfaces.objects.SProject;
 import org.bimserver.interfaces.objects.SRevision;
+import org.bimserver.models.geometry.Bounds;
 import org.bimserver.models.geometry.GeometryFactory;
 import org.bimserver.models.geometry.GeometryInfo;
 import org.bimserver.models.geometry.Vector3f;
@@ -138,17 +139,17 @@ public class LodToExcel {
 					int nrIfcProducts = 0;
 					int nrIfcProductsNoFurniture = 0;
 					int nrIfcProductsNoProxies = 0;
-					GeometryInfo totalBounds = GeometryFactory.eINSTANCE.createGeometryInfo();
+					Bounds totalBounds = GeometryFactory.eINSTANCE.createBounds();
 					Vector3f totalMin = GeometryFactory.eINSTANCE.createVector3f();
 					totalMin.setX(Float.MAX_VALUE);
 					totalMin.setY(Float.MAX_VALUE);
 					totalMin.setZ(Float.MAX_VALUE);
-					totalBounds.setMinBounds(totalMin);
+					totalBounds.setMin(totalMin);
 					Vector3f totalMax = GeometryFactory.eINSTANCE.createVector3f();
 					totalMax.setX(-Float.MAX_VALUE);
 					totalMax.setY(-Float.MAX_VALUE);
 					totalMax.setZ(-Float.MAX_VALUE);
-					totalBounds.setMaxBounds(totalMax);
+					totalBounds.setMax(totalMax);
 					int totalUsedAttributes = 0;
 					int totalUsedAttributesNoFurniture = 0;
 					int totalUsedAttributesNoProxies = 0;
@@ -161,8 +162,8 @@ public class LodToExcel {
 					for (IfcSpace ifcSpace : model.getAll(IfcSpace.class)) {
 						GeometryInfo geometryInfo = ifcSpace.getGeometry();
 						if (geometryInfo != null) {
-							Vector3f min = geometryInfo.getMinBounds();
-							Vector3f max = geometryInfo.getMaxBounds();
+							Vector3f min = geometryInfo.getBounds().getMin();
+							Vector3f max = geometryInfo.getBounds().getMax();
 							if (min != null && max != null) {
 								double v = cubicScaleFactor * (max.getX() - min.getX()) * (max.getY() - min.getY()) * (max.getZ() - min.getZ());
 								totalSpaceM3 += v;
@@ -181,8 +182,8 @@ public class LodToExcel {
 						GeometryInfo geometryInfo = ifcProduct.getGeometry();
 						if (geometryInfo != null) {
 							int nrTriangles = geometryInfo.getPrimitiveCount() / 12;
-							Vector3f min = geometryInfo.getMinBounds();
-							Vector3f max = geometryInfo.getMaxBounds();
+							Vector3f min = geometryInfo.getBounds().getMin();
+							Vector3f max = geometryInfo.getBounds().getMax();
 							if (min != null && max != null) {
 								if (min.getX() < totalMin.getX()) {
 									totalMin.setX(min.getX());
@@ -248,8 +249,10 @@ public class LodToExcel {
 						}
 					}
 					
-					System.out.println("Min: " + totalBounds.getMinBounds().getX() + ", " + totalBounds.getMinBounds().getY() + ", " + totalBounds.getMinBounds().getZ());
-					System.out.println("Max: " + totalBounds.getMaxBounds().getX() + ", " + totalBounds.getMaxBounds().getY() + ", " + totalBounds.getMaxBounds().getZ());
+					Vector3f min = totalBounds.getMin();
+					Vector3f max = totalBounds.getMax();
+					System.out.println("Min: " + min.getX() + ", " + min.getY() + ", " + min.getZ());
+					System.out.println("Max: " + max.getX() + ", " + max.getY() + ", " + max.getZ());
 					System.out.println("Cubic scale factor: " + cubicScaleFactor);
 					
 					writeRow(allSheet, row, revision, cubicScaleFactor, totalNrTriangles, nrIfcProducts, totalMin, totalMax, totalUsedAttributes, totalSpaceM3);

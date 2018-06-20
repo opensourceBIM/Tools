@@ -66,7 +66,7 @@ public class FindInSpaceV1 {
 						
 						GeometryInfo geometryInfo = ifcSpace.getGeometry();
 						if (geometryInfo != null) {
-							AxisAlignedBoundingBox boundingBox = new AxisAlignedBoundingBox(geometryInfo.getMinBounds(), geometryInfo.getMaxBounds());
+							AxisAlignedBoundingBox boundingBox = new AxisAlignedBoundingBox(geometryInfo.getBounds().getMin(), geometryInfo.getBounds().getMax());
 //							boundingBox.enlarge(0.1f);
 
 							Query query = new Query(objectsModel.getPackageMetaData());
