@@ -1,3 +1,4 @@
+package org.bimserver.metamodelcompare;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
