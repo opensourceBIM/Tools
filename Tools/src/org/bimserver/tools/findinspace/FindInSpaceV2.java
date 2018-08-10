@@ -167,7 +167,7 @@ public class FindInSpaceV2 {
 													if (ifcProduct.getGeometry() != null) {
 														GeometryInfo geometry = ifcProduct.getGeometry();
 														GeometryData data = geometry.getData();
-														float[] vertices = GeometryUtils.toFloatArray(data.getVertices());
+														float[] vertices = GeometryUtils.toFloatArray(data.getVertices().getData());
 														boolean allInside = true;
 														double[] matrix = GeometryUtils.toDoubleArray(geometry.getTransformation());
 														double[] result = new double[4];
@@ -257,7 +257,7 @@ public class FindInSpaceV2 {
 			if (ifcProduct.getGeometry() != null) {
 				GeometryInfo geometry = ifcProduct.getGeometry();
 				GeometryData data = geometry.getData();
-				float[] vertices = GeometryUtils.toFloatArray(data.getVertices());
+				float[] vertices = GeometryUtils.toFloatArray(data.getVertices().getData());
 				boolean allInside = true;
 				for (int i = 0; i < vertices.length; i += 3) {
 					double[] result = new double[4];

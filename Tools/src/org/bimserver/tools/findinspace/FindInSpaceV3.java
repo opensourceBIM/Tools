@@ -488,7 +488,7 @@ public class FindInSpaceV3 {
 												if (ifcProduct.getGeometry() != null) {
 													GeometryInfo geometry = ifcProduct.getGeometry();
 													GeometryData data = geometry.getData();
-													float[] vertices = GeometryUtils.toFloatArray(data.getVertices());
+													float[] vertices = GeometryUtils.toFloatArray(data.getVertices().getData());
 													boolean allInside = true;
 													boolean moreThanOneInside = false;
 													double[] productMatrix = GeometryUtils.toDoubleArray(geometry.getTransformation());
@@ -579,7 +579,7 @@ public class FindInSpaceV3 {
 			if (ifcProduct.getGeometry() != null) {
 				GeometryInfo geometry = ifcProduct.getGeometry();
 				GeometryData data = geometry.getData();
-				float[] vertices = GeometryUtils.toFloatArray(data.getVertices());
+				float[] vertices = GeometryUtils.toFloatArray(data.getVertices().getData());
 				boolean allInside = true;
 				boolean moreThanOneInside = false;
 				double[] matrix = GeometryUtils.toDoubleArray(geometry.getTransformation());
