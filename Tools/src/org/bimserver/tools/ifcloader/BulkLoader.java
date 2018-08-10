@@ -27,30 +27,31 @@ public class BulkLoader {
 	}
 
 	private void start() {
-		Path bulkPath = Paths.get("C:\\Bulk");
-		Path regularPath = Paths.get("C:\\Regular");
+		Path basePath = Paths.get("C:\\IFC");
+		Path bulkPath = basePath.resolve("bulk");
+		Path regularPath = basePath.resolve("single");
 		Path ifc4path = regularPath.resolve("ifc4");
 		Path ifc2x3tc1path = regularPath.resolve("ifc2x3tc1");
 		try (JsonBimServerClientFactory factory = new JsonBimServerClientFactory("http://localhost:8080")) {
 			ExecutorService executorService = new ThreadPoolExecutor(8, 8, 1, TimeUnit.HOURS, new ArrayBlockingQueue<>(10000));
 			try (BimServerClient client = factory.create(new UsernamePasswordAuthenticationInfo("admin@bimserver.org", "admin"))) {
-//				DirectoryStream<Path> stream = Files.newDirectoryStream(bulkPath);
-//				for (Path path : stream) {
-//					executorService.submit(new Runnable(){
-//						@Override
-//						public void run() {
-//							try {
-//								SProject project = client.getServiceInterface().addProject(path.getFileName().toString(), "ifc2x3tc1");
-//								client.bulkCheckin(project.getOid(), path, "Automatic bulk checkin");
-//							} catch (ServerException e) {
-//								e.printStackTrace();
-//							} catch (UserException e) {
-//								e.printStackTrace();
-//							} catch (PublicInterfaceNotFoundException e) {
-//								e.printStackTrace();
-//							}
-//						}});
-//				}
+				DirectoryStream<Path> stream = Files.newDirectoryStream(bulkPath);
+				for (Path path : stream) {
+					executorService.submit(new Runnable(){
+						@Override
+						public void run() {
+							try {
+								SProject project = client.getServiceInterface().addProject(path.getFileName().toString(), "ifc2x3tc1");
+								client.bulkCheckin(project.getOid(), path, "Automatic bulk checkin");
+							} catch (ServerException e) {
+								e.printStackTrace();
+							} catch (UserException e) {
+								e.printStackTrace();
+							} catch (PublicInterfaceNotFoundException e) {
+								e.printStackTrace();
+							}
+						}});
+				}
 				DirectoryStream<Path> regularStream = Files.newDirectoryStream(ifc4path);
 				for (Path regularFile : regularStream) {
 					executorService.submit(new Runnable(){
