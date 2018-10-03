@@ -27,13 +27,13 @@ public class BulkLoader {
 	}
 
 	private void start() {
-		Path basePath = Paths.get("C:\\IFC");
+		Path basePath = Paths.get("/home/ruben/backup/ifcfilesorganized");
 		Path bulkPath = basePath.resolve("bulk");
 		Path regularPath = basePath.resolve("single");
 		Path ifc4path = regularPath.resolve("ifc4");
 		Path ifc2x3tc1path = regularPath.resolve("ifc2x3tc1");
 		try (JsonBimServerClientFactory factory = new JsonBimServerClientFactory("http://localhost:8080")) {
-			ExecutorService executorService = new ThreadPoolExecutor(8, 8, 1, TimeUnit.HOURS, new ArrayBlockingQueue<>(10000));
+			ExecutorService executorService = new ThreadPoolExecutor(16, 16, 1, TimeUnit.HOURS, new ArrayBlockingQueue<>(10000));
 			try (BimServerClient client = factory.create(new UsernamePasswordAuthenticationInfo("admin@bimserver.org", "admin"))) {
 				DirectoryStream<Path> stream = Files.newDirectoryStream(bulkPath);
 				for (Path path : stream) {
@@ -95,7 +95,7 @@ public class BulkLoader {
 					});
 				}
 				executorService.shutdown();
-				executorService.awaitTermination(1, TimeUnit.HOURS);
+				executorService.awaitTermination(24, TimeUnit.HOURS);
 			}
 		} catch (BimServerClientException e) {
 			e.printStackTrace();
