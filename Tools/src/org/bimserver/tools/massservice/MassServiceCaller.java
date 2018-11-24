@@ -205,7 +205,7 @@ public class MassServiceCaller {
 
 	private void checkin(SProject project, String extension, Path file) throws UserException, ServerException, IOException, PublicInterfaceNotFoundException {
 		SDeserializerPluginConfiguration deserializer = client.getServiceInterface().getSuggestedDeserializerForExtension(extension, project.getOid());
-		client.checkin(project.getOid(), "Test", deserializer.getOid(), false, Flow.SYNC, file);
+		client.checkinSync(project.getOid(), "Test", deserializer.getOid(), false, file);
 		project = client.getServiceInterface().getProjectByPoid(project.getOid());
 		
 		if (project.getLastRevisionId() == -1) {
@@ -295,7 +295,7 @@ public class MassServiceCaller {
 				client.getServiceInterface().addServiceToProject(project.getOid(), sService);
 				
 				SDeserializerPluginConfiguration deserializer = client.getServiceInterface().getSuggestedDeserializerForExtension(extension, project.getOid());
-				client.checkin(project.getOid(), "Test", deserializer.getOid(), false, Flow.SYNC, file);
+				client.checkinSync(project.getOid(), "Test", deserializer.getOid(), false, file);
 				project = client.getServiceInterface().getProjectByPoid(project.getOid());
 				
 				waitForResults(file, project.getLastRevisionId());

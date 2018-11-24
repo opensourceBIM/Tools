@@ -107,7 +107,7 @@ public class IfcLoader {
 				SDeserializerPluginConfiguration deserializer = client.getServiceInterface().getSuggestedDeserializerForExtension("ifc", parent.getOid());
 				if (nrChildren == 1) {
 					try {
-						client.checkin(parent.getOid(), "Initial", deserializer.getOid(), false, Flow.SYNC, baseDirectory);
+						client.checkinSync(parent.getOid(), "Initial", deserializer.getOid(), false, baseDirectory);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -116,7 +116,7 @@ public class IfcLoader {
 					folderName = folderName.substring(0, folderName.lastIndexOf(".") - 1);
 					SProject project = client.getServiceInterface().addProjectAsSubProject(folderName, parent.getOid(), "ifc2x3tc1");
 					try {
-						client.checkin(project.getOid(), "Initial", deserializer.getOid(), false, Flow.SYNC, baseDirectory);
+						client.checkinSync(project.getOid(), "Initial", deserializer.getOid(), false, baseDirectory);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

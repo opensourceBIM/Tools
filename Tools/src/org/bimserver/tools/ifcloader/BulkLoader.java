@@ -76,7 +76,7 @@ public class BulkLoader {
 									String schema = client.getServiceInterface().determineIfcVersion(extractHead(regularFile), filename.toLowerCase().endsWith(".ifczip"));
 									SProject project = client.getServiceInterface().addProject(filename, schema);
 									SDeserializerPluginConfiguration deserializer = client.getServiceInterface().getSuggestedDeserializerForExtension("ifc", project.getOid());
-									client.checkin(project.getOid(), "Automatic checkin", deserializer.getOid(), false, Flow.SYNC, regularFile);
+									client.checkinSync(project.getOid(), "Automatic checkin", deserializer.getOid(), false, regularFile);
 								} catch (ServerException e) {
 									e.printStackTrace();
 								} catch (UserException e) {
