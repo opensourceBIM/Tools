@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>org.opensourcebim</groupId>
 			<artifactId>bimserver</artifactId>
-			<version>1.5.118-SNAPSHOT</version>
+			<version>1.5.121-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-cli</groupId>
@@ -68,7 +68,7 @@
 		<dependency>
 			<groupId>org.opensourcebim</groupId>
 			<artifactId>ifcplugins</artifactId>
-			<version>0.0.47-SNAPSHOT</version>
+			<version>0.0.51-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
