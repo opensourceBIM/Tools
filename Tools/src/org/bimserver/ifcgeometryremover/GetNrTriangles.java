@@ -50,11 +50,11 @@ public class GetNrTriangles {
 				Files.createDirectory(home);
 			}
 			PluginManager pluginManager = LocalDevPluginLoader.createPluginManager(home);
-			pluginManager.loadAllPluginsFromEclipseWorkspace(Paths.get("../"), true);
+//			pluginManager.loadAllPluginsFromEclipseWorkspace(Paths.get("../"), true);
 			
 			MetaDataManager metaDataManager = new MetaDataManager(home.resolve("tmp"));
 			pluginManager.setMetaDataManager(metaDataManager);
-			metaDataManager.init();
+//			metaDataManager.init();
 			
 			pluginManager.initAllLoadedPlugins();
 			
