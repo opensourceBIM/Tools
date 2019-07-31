@@ -86,7 +86,7 @@ public class FindInSpaceV1 {
 										foundGuids.add(ifcProduct.getGlobalId());
 									}
 								}
-							});
+							}, true);
 						} else {
 							System.out.println("Missing geometry for IfcSpace " + ifcSpace.getGlobalId());
 						}
